@@ -4,6 +4,7 @@ import Intro from './pages/Intro';
 import { IUser } from './models/user';
 import { Dispatch, SetStateAction, createContext, useState } from 'react';
 import AuthLayout from './components/AuthLayout';
+import Main from './pages/Main';
 
 type AppContextType = {
   user: IUser | null;
@@ -23,7 +24,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<AuthLayout />}>
-            <Route path='/' />
+            <Route path='/' element={<Main />} />
           </Route>
           <Route path='/login' element={<Intro />} />
         </Routes>

@@ -32,12 +32,15 @@ export default function useFetch<TData> ()
         if (error)
             setState (State.Fail);
     }, [error])
-    async function refetch (url:string, opts:RequestInit) : Promise<void>
+    async function refetch (url:string, opts:RequestInit|undefined = undefined) : Promise<void>
     {
         try 
         {
             setIsLoading (true);
 
+            if (!opts) 
+                opts = {};
+            
             opts.credentials = "include";
             const res = await fetch (url, opts);
 

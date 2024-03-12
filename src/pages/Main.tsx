@@ -27,7 +27,7 @@ const relatedPostsUrl = apiUrl + '/posts/related-posts';
 
 export default function Main(): JSX.Element {
   const [search, setSearch] = useState<string>('');
-  const { user } = useContext(AppContext);
+  const { user, setViewerTarget } = useContext(AppContext);
   const [createForm, setCreateForm] = useState<CreateForm>({
     text: '',
   });
@@ -123,8 +123,10 @@ export default function Main(): JSX.Element {
                 <p>{post.text}</p>
                 <div className={styles.postImages}>
                   {post.images &&
-                    post.images.map((img) => (
+                    post.images.map((img, i) => (
                       <img
+                        key={i}
+                        onClick={() => setViewerTarget(post)}
                         src={getPostImage(img.url, 'small')}
                         className={styles.imgPost}
                       />

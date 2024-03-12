@@ -8,7 +8,7 @@ enum State
     Fail
 }
 
-export default function useFetc<TData> () 
+export default function useFetch<TData> () 
 {
     const [state, setState] = useState<State>(State.Idle);
     const [data, setData] = useState<TData>();

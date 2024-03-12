@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { IImage } from '../models/image';
 import { IPost } from '../models/post';
 import styles from './ImageViewer.module.css';
 import ProfileHeader from './ProfileHeader';
 import { getPostImage } from '../util/url';
+import { AppContext } from '../App';
 
 export default function ImageViewer({
   target,
@@ -12,10 +13,9 @@ export default function ImageViewer({
   target?: IPost;
 }): JSX.Element {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const { setViewerTarget } = useContext(AppContext);
 
   if (target === undefined) return <></>;
-
-  console.log(target.images);
 
   function nextImage(): void {
     if (target)
@@ -40,7 +40,10 @@ export default function ImageViewer({
   if (image)
     return (
       <div className={styles.imageViewer}>
-        <i className={styles.btnClose + ' fa-solid fa-xmark'}></i>
+        <i
+          onClick={() => setViewerTarget(undefined)}
+          className={styles.btnClose + ' fa-solid fa-xmark'}
+        ></i>
         <div className={styles.imageCurrent}>
           <i
             onClick={prevImage}

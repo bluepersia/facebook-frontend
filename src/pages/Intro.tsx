@@ -11,6 +11,14 @@ type LoginForm = {
   password: string;
 };
 
+type SignupForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 type LoginFetch = {
   data: {
     user: IUser;
@@ -23,16 +31,32 @@ export default function Intro(): JSX.Element {
     email: '',
     password: '',
   });
+  const [signupForm, setSignupForm] = useState<SignupForm>({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
   const loginFetch = useFetch<LoginFetch>();
+  const signupFetch = useFetch<LoginFetch>();
   const { setUser } = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (loginFetch.data) {
       setUser(loginFetch.data.data.user);
-      navigate('/', { replace: true });
+      navigate('/');
     }
   }, [loginFetch.data]);
+
+  useEffect(() => {
+    if (signupFetch.data) {
+      setUser(signupFetch.data.data.user);
+      setShowSignup(false);
+      navigate('/');
+    }
+  }, [signupFetch.data]);
 
   function handleLoginInputChange(e: ChangeEvent): void {
     const { name, value } = e.target as HTMLInputElement;
@@ -40,14 +64,27 @@ export default function Intro(): JSX.Element {
     setLoginForm((loginForm) => ({ ...loginForm, [name]: value }));
   }
 
+  function handleSignupInputChange(e: ChangeEvent): void {
+    const { name, value } = e.target as HTMLInputElement;
+
+    setSignupForm((signupForm) => ({ ...signupForm, [name]: value }));
+  }
+
   function handleLoginSubmit(e: FormEvent): void {
     e.preventDefault();
-
     loginFetch.refetch(`${apiUrl}/users/login`, {
       method: 'POST',
       body: new FormData(e.target as HTMLFormElement),
       credentials: 'include',
-      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  }
+
+  function handleSignupSubmit(e: FormEvent): void {
+    e.preventDefault();
+    signupFetch.refetch(`${apiUrl}/users/sign-up`, {
+      method: 'POST',
+      body: new FormData(e.target as HTMLFormElement),
+      credentials: 'include',
     });
   }
 
@@ -91,31 +128,54 @@ export default function Intro(): JSX.Element {
             <h2 className={styles.signUpTitle}>Sign Up</h2>
             <p className={styles.signUpSub}>It's quick and easy.</p>
           </header>
-          <form className={styles.formSignUp}>
+          <form className={styles.formSignUp} onSubmit={handleSignupSubmit}>
             <div className={styles.signUpName}>
               <input
                 type='text'
                 className={styles.signUpInputName}
                 placeholder='First name'
+                name='firstName'
+                value={signupForm.firstName}
+                onChange={handleSignupInputChange}
               />
               <input
                 type='text'
                 className={styles.signUpInputName}
                 placeholder='Last name'
+                name='lastName'
+                value={signupForm.lastName}
+                onChange={handleSignupInputChange}
               />
             </div>
             <input
               type='email'
               className={styles.input}
               placeholder='Email address'
+              name='email'
+              value={signupForm.email}
+              onChange={handleSignupInputChange}
             />
             <input
               type='password'
               className={styles.input}
               placeholder='Password'
+              value={signupForm.password}
+              name='password'
+              onChange={handleSignupInputChange}
+            />
+            <input
+              type='password'
+              className={styles.input}
+              placeholder='Confirm Password'
+              name='passwordConfirm'
+              value={signupForm.passwordConfirm}
+              onChange={handleSignupInputChange}
             />
             <button className={styles.btnSignUp + ' btn-green'}>Sign Up</button>
           </form>
+          {signupFetch.error && (
+            <p className='error'>{signupFetch.error.message}</p>
+          )}
         </div>
       )}
     </div>

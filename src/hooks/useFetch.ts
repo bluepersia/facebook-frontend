@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-enum State 
+export enum State 
 {
     Idle,
     Pending,
@@ -15,28 +15,20 @@ export default function useFetch<TData> ()
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error|null>(null);
 
+ 
     useEffect (() =>
     {
-        if (isLoading)
-            setState (State.Pending);
-    }, [isLoading]);
+        if (error)  
+            console.error (error);
+    }, [error]);
 
-    useEffect (()=>
-    {
-        if (data)
-            setState (State.Success);
-    }, [data]);
-
-    useEffect (() =>
-    {
-        if (error)
-            setState (State.Fail);
-    }, [error])
+   
     async function refetch (url:string, opts:RequestInit|undefined = undefined) : Promise<void>
     {
         try 
         {
             setIsLoading (true);
+            setState (State.Pending);
 
             if (!opts) 
                 opts = {};
@@ -46,12 +38,16 @@ export default function useFetch<TData> ()
 
             if (!res.ok)
                 throw new Error ((await res.json()).message);
+            
+            
+            setData (res.status === 204 ? null : await res.json());
 
-            setData (await res.json());
+            setState (State.Success);
         }
         catch (err)
         {
             setError (err as Error);
+            setState (State.Fail);
         }
         finally
         {

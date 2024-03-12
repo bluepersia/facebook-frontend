@@ -7,3 +7,8 @@ export interface IUser
     imageProfile:string,
     imageCover:string
 }
+
+export function getFullName (user:IUser) : string 
+{
+    return user.firstName + ' ' + user.lastName;
+}

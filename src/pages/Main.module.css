@@ -1,0 +1,86 @@
+.page {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: minmax(auto, 100px) auto;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+.header {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    max-height: 100px;
+    background-color: #0866ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.regionLeft {
+    grid-row: 2 / -1s;
+    grid-column: 1 / 2;
+}
+
+.regionRight {
+    grid-row: 2 / -1;
+    grid-column: -2 / -1;
+}
+
+.regionLeft, .regionRight, .regionMain {
+    padding: 2em;
+}
+
+
+
+
+
+.regionMain {
+    height: 100%;
+    grid-column:  2 / -2;
+    grid-row: 2 / -1;
+}
+
+.newPost {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    background-color: rgba(0,0,0,10%);
+    border-radius: 8px;
+    padding: 2em;
+}
+
+.formNewPost {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.inputTextArea{
+    padding: 1em;
+}
+
+.inputTextArea, .inputTextArea::placeholder {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;;
+}
+
+
+.btnSubmit {
+    composes: btn from '../App.css';
+
+
+}
+
+.relatedPosts {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    background-color: rgba(0,0,0, 5%);
+}
+
+
+.postImages {
+    display: flex;
+    flex-wrap: wrap;
+}

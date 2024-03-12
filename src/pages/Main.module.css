@@ -79,6 +79,18 @@
     background-color: rgba(0,0,0, 5%);
 }
 
+.relatedPostHeader {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.relatedPostDate{
+    margin-top: 0;
+    margin-left: auto;
+}
+
+
 
 .postImages {
     display: flex;

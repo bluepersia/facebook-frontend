@@ -114,7 +114,12 @@ export default function Main(): JSX.Element {
           {postsFetch.data &&
             postsFetch.data.data.posts.map((post, i) => (
               <div key={i} className={styles.relatedPost}>
-                <ProfileHeader user={post.user} />
+                <header className={styles.relatedPostHeader}>
+                  <ProfileHeader user={post.user} />
+                  <p className={styles.relatedPostDate}>
+                    {post.createdAt.toLocaleString()}
+                  </p>
+                </header>
                 <p>{post.text}</p>
                 <div className={styles.postImages}>
                   {post.images &&

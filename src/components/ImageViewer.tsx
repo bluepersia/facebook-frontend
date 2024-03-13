@@ -8,6 +8,7 @@ import { apiUrl, getPostImage } from '../util/url';
 import { AppContext } from '../App';
 import LikesCounter from './LikesCounter';
 import useFetch from '../hooks/useFetch';
+import Comments from './Comments';
 
 type ImageData = {
   data: {
@@ -93,6 +94,7 @@ export default function ImageViewer({
       <div className={styles.imageViewerDesc}>
         <ProfileHeader user={target.user} date={target.createdAt} />
         <LikesCounter target={image} invalidate={invalidate} />
+        <Comments target={image} />
       </div>
     </div>
   );

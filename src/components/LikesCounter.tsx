@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import useFetch, { State } from '../hooks/useFetch';
-import { IImage } from '../models/image';
-import { IPost } from '../models/post';
 import { apiUrl } from '../util/url';
 import styles from './LikesCounter.module.css';
+import { ILikeable } from '../models/likeable';
 
 export default function LikesCounter({
   target,
   invalidate,
 }: {
-  target: IPost | IImage;
-  invalidate: (target: IPost | IImage) => void;
+  target: ILikeable;
+  invalidate: (target: ILikeable) => void;
 }): JSX.Element {
   const { refetch, state } = useFetch();
 
@@ -22,7 +21,7 @@ export default function LikesCounter({
     refetch(`${apiUrl}/reactions/toggle`, {
       method: 'POST',
       body: JSON.stringify({
-        target: instanceOfTargetIsPost(target) ? 'post' : 'image',
+        target: target.type,
         targetId: target._id,
       }),
       headers: {
@@ -31,10 +30,6 @@ export default function LikesCounter({
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function instanceOfTargetIsPost(target: any): target is IPost {
-    return 'isPost' in target;
-  }
   return (
     <div
       onClick={handleClick}

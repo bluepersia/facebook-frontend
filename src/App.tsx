@@ -28,25 +28,25 @@ export const AppContext = createContext<AppContextType>({
 
 function App() {
   const [user, setUser] = useState<IUser | null>(() => {
-    const json = localStorage.getItem('user');
+    const json = localStorage.getItem('user2');
     return json ? JSON.parse(json) : null;
   });
   const [userExpires, setUserExpires] = useState<Date>(() => {
-    const json = localStorage.getItem('userExpires');
+    const json = localStorage.getItem('userExpires2');
     return json ? JSON.parse(json) : new Date(Date.now());
   });
   const [viewerTarget, setViewerTarget] = useState<IPost>();
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user2', JSON.stringify(user));
       setUserExpires(new Date(Date.now() + 90 * 24 * 60 * 60 * 1000));
     }
   }, [user]);
 
   useEffect(() => {
     if (userExpires)
-      localStorage.setItem('userExpires', JSON.stringify(userExpires));
+      localStorage.setItem('userExpires2', JSON.stringify(userExpires));
   }, [userExpires]);
 
   useEffect(() => {

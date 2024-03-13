@@ -82,6 +82,8 @@ export default function Comments({
   async function createComment(): Promise<void> {
     if (!commentingTarget) return;
 
+    if (createSingle.state === State.Pending) return;
+
     createSingle.setExtra(commentingTarget);
     await createSingle.refetch(`${apiUrl}/comments`, {
       method: 'POST',
@@ -154,42 +156,47 @@ export default function Comments({
 
   const showReply = level <= 2;
 
-  if (comments.length > 0) {
-    if (show)
-      return (
-        <div className={styles.comments + ' ' + styles[`level-${level}`]}>
-          {isLoading && <h3>Loading...</h3>}
-          {target.type === 'comment' && (
-            <button className={styles.btnHide} onClick={() => setShow(false)}>
-              Hide
-            </button>
-          )}
-          {comments.map((comment, commentIndex) => (
-            <div key={comment._id} className={styles.comment}>
-              <ProfileHeader user={comment.user} />
-              <p>{comment.text}</p>
-              <div className={styles.response}>
-                <LikesCounter target={comment} invalidate={invalidate} />
-                <button onClick={() => setCommentingTarget(comment)}>
-                  Reply
-                </button>
-
-                {isMine(comment) && (
-                  <button onClick={() => deleteComment(comment._id)}>
-                    Delete
+  if (show)
+    return (
+      <>
+        {comments.length > 0 && (
+          <div className={styles.comments + ' ' + styles[`level-${level}`]}>
+            {isLoading && <h3>Loading...</h3>}
+            {target.type === 'comment' && (
+              <button className={styles.btnHide} onClick={() => setShow(false)}>
+                Hide comments
+              </button>
+            )}
+            {comments.map((comment, commentIndex) => (
+              <div key={comment._id} className={styles.comment}>
+                <ProfileHeader user={comment.user} />
+                <p>{comment.text}</p>
+                <div className={styles.response}>
+                  <LikesCounter target={comment} invalidate={invalidate} />
+                  <button onClick={() => setCommentingTarget(comment)}>
+                    Reply
                   </button>
-                )}
-              </div>
-              <Comments
-                target={comment}
-                level={level + 1}
-                showAtStart={false}
-                forceShow={getCommentsShowByIndex(commentIndex)}
-              />
-            </div>
-          ))}
 
-          {commentingTarget && showReply && (
+                  {isMine(comment) && (
+                    <button onClick={() => deleteComment(comment._id)}>
+                      Delete
+                    </button>
+                  )}
+                </div>
+                <Comments
+                  target={comment}
+                  level={level + 1}
+                  showAtStart={false}
+                  forceShow={getCommentsShowByIndex(commentIndex)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        {commentingTarget &&
+          (commentingTarget === target ||
+            comments.includes(commentingTarget as IComment)) &&
+          showReply && (
             <form
               onSubmit={handleCommentSubmit}
               className={
@@ -220,25 +227,25 @@ export default function Comments({
             </form>
           )}
 
-          {(!commentingTarget || commentingTarget.type === 'comment') &&
-            target.type != 'comment' &&
-            showReply && (
-              <button
-                onClick={() => setCommentingTarget(target)}
-                className={styles.btnComment + ' btn btn-blue'}
-              >
-                Comment
-              </button>
-            )}
-        </div>
-      );
+        {(!commentingTarget || commentingTarget.type === 'comment') &&
+          target.type != 'comment' &&
+          showReply && (
+            <button
+              onClick={() => setCommentingTarget(target)}
+              className={styles.btnComment + ' btn btn-blue'}
+            >
+              Comment
+            </button>
+          )}
+      </>
+    );
 
-    if (showReply)
-      return (
-        <button className={styles.btnReadMore} onClick={() => setShow(true)}>
-          Read more...
-        </button>
-      );
-  }
+  if (showReply && comments.length > 0)
+    return (
+      <button className={styles.btnReadMore} onClick={() => setShow(true)}>
+        Show comments ({comments.length})
+      </button>
+    );
+
   return <></>;
 }

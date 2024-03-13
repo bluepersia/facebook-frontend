@@ -59,15 +59,16 @@ function App() {
 
   return (
     <AppContext.Provider value={{ user, setUser, setViewerTarget }}>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AuthLayout />}>
-            <Route path='/' element={<Main />} />
-          </Route>
-          <Route path='/login' element={<Intro />} />
-        </Routes>
-      </BrowserRouter>
-      {viewerTarget && <ImageViewer target={viewerTarget} />}
+      {(viewerTarget && <ImageViewer target={viewerTarget} />) || (
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AuthLayout />}>
+              <Route path='/' element={<Main />} />
+            </Route>
+            <Route path='/login' element={<Intro />} />
+          </Routes>
+        </BrowserRouter>
+      )}
     </AppContext.Provider>
   );
 }

@@ -1,0 +1,55 @@
+.comment {
+    border-bottom: 1px solid gray;
+}
+.commentSubmit {
+    margin-bottom: 2em;
+}
+
+.commentArea {
+    width: 100%;
+    height: 5em;
+    font-family: inherit;
+
+}
+
+.commentBtns {
+    display: flex;
+    gap: 1em;
+}
+
+
+.response {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.level-1 
+{
+    margin-left: 1em;
+}
+
+.level-2 {
+    margin-left: 2em;
+}
+
+.level-3 {
+    margin-left: 3em;
+}
+
+.btnComment {
+    margin-top: 2em;
+}
+
+.btnHide, .btnReadMore {
+    display: block;
+    margin-bottom: 2em;
+    color: #0866ff;
+    background:none;
+    border:none;
+    text-decoration: underline;
+}
+
+
+
+

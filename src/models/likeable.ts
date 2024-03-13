@@ -1,5 +1,6 @@
 export interface ILikeable 
 {
-    id:string,
+    _id:string,
+    type:string,
     likes: number
 }

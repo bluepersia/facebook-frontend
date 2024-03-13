@@ -14,6 +14,8 @@ export default function useFetch<TData> ()
     const [data, setData] = useState<TData>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error|null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [extra, setExtra] = useState<any> ();
 
  
     useEffect (() =>
@@ -55,5 +57,5 @@ export default function useFetch<TData> ()
         }
     }
 
-    return {data, isLoading, error, state, refetch};
+    return {data, isLoading, error, state, refetch, extra, setExtra};
 }
